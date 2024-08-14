@@ -4,10 +4,14 @@ from werkzeug.exceptions import abort
 from db import listing_by_id
 from db import new_listing
 from db import get_all_listings
+from flask_login import LoginManager
 
 app = Flask(__name__)
 # flask --app app run
 app.config.from_pyfile('config.py')
+login_manager = LoginManager()
+login_manager.init_app(app)
+
 
 @app.route('/about')
 def about():
@@ -17,6 +21,7 @@ def about():
 @app.route('/')
 def index():
     return render_template('index.html')
+
 
 
 @app.route("/<id>")
