@@ -1,0 +1,4 @@
+# .gitignore
+config.py
+planning.txt
+database.db

@@ -1,0 +1,35 @@
+DROP TABLE IF EXISTS User;
+DROP TABLE IF EXISTS Listings;
+DROP TABLE IF EXISTS Messages;
+
+
+
+CREATE TABLE User (
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	name VARCHAR(20) NOT NULL UNIQUE,
+	password_hash VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE Listings (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    category INT NOT NULL,
+    name VARCHAR(30) NOT NULL,
+    image TEXT,
+    description VARCHAR(1000) NOT NULL,
+    price FLOAT,
+    created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    user_id INT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES User(id)
+);
+
+CREATE TABLE Messages (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    subject VARCHAR(30) NOT NULL,
+    message VARCHAR(1000),
+    created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    user_send INT NOT NULL,
+    user_receive INT NOT NULL,
+    FOREIGN KEY(user_send) REFERENCES User(id),
+    FOREIGN KEY(user_receive) REFERENCES User(id)
+);
+

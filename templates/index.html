@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %} 
+    Welcome to the flask page 
+{% endblock %}
+
+{% block content %}
+    <h1>Welcome to the index page</h1>
+    <h1>These are the current functionalities of the app:</h1>
+    <ul>
+        <li><a href="{{ url_for('create_listing')}}">create a listing</a></li>
+        <li><a href="{{ url_for('show_listings')}}">show all listings</a></li>
+        <li>search a listing by adding /'id' in the address bar</li>
+    </ul> 
+
+{% endblock %}

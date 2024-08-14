@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %} 
+{{ listing.name }}
+{% endblock %}
+
+{% block content %}
+    <h1>This is your requested listing:</h1>
+    category: {{ listing['category'] }}
+    {{ listing['image'] }}
+    <a href src="index.html">User: {{ listing['user_id'] }}</a>
+    <h1>{{ listing['name']}}</h1>
+    <h1>price: {{ listing['price'] }}</h1>
+    {{ listing['description'] }}
+    created on: {{ listing['created'] }}
+{% endblock %}

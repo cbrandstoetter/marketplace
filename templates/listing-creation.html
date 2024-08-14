@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %} 
+New Listing
+{% endblock %}
+
+{% block content %}
+<h1>Create a new listing!</h1>
+
+<form method="POST">
+
+    <h1 id="dummy">user_id placeholder</h1>
+    <h1 id="dummy">choose category dropdown placeholer</h1>
+    <h1 id="dummy">Submit image placeholder:</h1>
+    <h1>Listing Name:</h1>
+    <input name="name">
+    <h1>Description:</h1>
+    <input name="description">
+    <h1>Price:</h1>
+    <input name="price">
+    
+    <input type="submit" name="post" value="Submit your listing">
+</form>
+{% endblock %}
