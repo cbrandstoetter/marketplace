@@ -1,0 +1,61 @@
+Idee: sortierung von daten mit drop down menü, Datum, Preis, etc. z.B. gebrauchthandelnwie willhaben
+
+# # # # # # # # # # # # # # # # # # # # # #
+
+todo:
+start flask routes
+flask login
+
+# # # # # # # # # # # # # # # # # # # # # #
+
+done:
+database schema
+create title logo
+create site logo
+listing by id handler
+index page with functionalities
+route to create listing
+document current database functions
+new_listing function in db.py
+
+# # # # # # # # # # # # # # # # # # # # # #
+
+todo:
+run app.py
+
+
+view all listings with image, price, name
+user login
+access listings by clicking on them
+sort listings by category
+implement listing as a class (always the same dictionary)
+limit price float to 2 decimals
+edit comma to point decimal for german-speaking input
+improve error handling (for example listing by id returns 404 error everytime an error occurs)
+    - print request errors etc. to console
+    - implement scalable error handler, e.g. counter: 10 sql errors 
+
+side-todo:
+research Parameterized Query -> cur.execute("SELECT category, name, image, description, created, user_id FROM Listings WHERE id=?", (id,))
+research escape flask security
+
+
+# # # # # # # # # # # # # # # # # # # # # #
+
+features: 
+user login
++ register as user
++ login to create a listing, message etc.
+
+create listing
++ name of listing, description
++ contact information
++ address
++ images
++ send message button
++ edit listing
++ delete listing/set as active
+
+message system
++ send/reveice messages
++ display messages with timestamp, sender
