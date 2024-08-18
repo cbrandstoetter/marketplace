@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 
 {% block title %} 
-Listings
+    {{ user.username }}
 {% endblock %}
 
-{% block content %}
 
+{% block content %}
 <div class="listing-container">
     <ul>
         {% for listing in listings %}
@@ -18,11 +18,25 @@ Listings
                 </div>
             </div>
         </li>
-        <button>edit</button>
-        <button>delete</button>
+        <form method="POST">
+            <button type="submit" value={{listing.id}} name="delete">delete listing</button>
+        </form>
+        <form method="POST" name="edit">
+            <button type="submit" value={{listing.id}} name="edit">edit listing</button>
+        </form>
+
         {% endfor %}
     </ul>
 </div>
 
-
+<!-- Flash Messages -->
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="alert alert-info mt-4">
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
 {% endblock %}

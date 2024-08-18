@@ -19,8 +19,9 @@ def listing_by_id(id):
         with sqlite3.connect('database.db') as connection:
             cur = connection.cursor()
             # After research the method was updated to include a parameterized, preventing possibly unwanted user input that can alter the database (SQL-injection)
-            cur.execute("SELECT category, name, image, description, created, user_id FROM Listings WHERE id=?", (id,))
+            cur.execute("SELECT id, category, name, image, description, price, created, user_id FROM Listings WHERE id=?", (id,))
             row = cur.fetchone()
+            print(row)
             if row:
                 # this method of extracting the data from sql uses a static approach
                 listing = {
@@ -31,8 +32,9 @@ def listing_by_id(id):
                     'description': row[4],
                     'price': row[5],
                     'created': row[6],
-                    'user_id': row[7]
+                    'user_name': row[7]
                 }
+                print(listing)
             else:
                 listing = None
     except sqlite3.Error as e:
@@ -63,6 +65,7 @@ def new_listing(listing):
             cur = connection.cursor()
             cur.execute(sql, values)
             connection.commit()
+            connection.close()
             return True
     except sqlite3.Error as e:
         # Print the sqlite3 Error to console if some error occurs
@@ -70,19 +73,81 @@ def new_listing(listing):
         return False
 
 
-def get_all_listings():
+def get_listings_user(user_id):
     try:
         with sqlite3.connect('database.db') as connection:
             cur = connection.cursor()
             # After research the method was updated to include a parameterized, preventing possibly unwanted user input that can alter the database (SQL-injection)
-            cur.execute("SELECT id, category, name, image, price, description, created, user_id FROM Listings")
+            cur.execute("SELECT id, name, image, price, created FROM Listings WHERE user_id='?'" (user_id, ))
             rows = cur.fetchall()
-            if rows:
-                return rows
-            else:
-                rows = None
+            listings = []
+            index = 0
+            print(rows)
+            for listing in rows:
+                listings.append({"id": listing[0], 
+                            "category": listing[1], 
+                            "name": listing[2], 
+                            "image": listing[3], 
+                            "description": listing[5], 
+                            "price": listing[4], 
+                            "created": listing[6], 
+                            "user_name": listing[7]
+                            })
+                index += 1
+            print(listings)
+            return listings
     except sqlite3.Error as e:
         # this prints the sqlite3 Error to console if some error occurs
         print(f"Database error: %s" %e)
-        rows = False
-    return rows
+        listings = False
+        return listings
+    
+
+
+def get_all_listings(*args):
+    try:
+        with sqlite3.connect('database.db') as connection:
+            cur = connection.cursor()
+            # After research the method was updated to include a parameterized, preventing possibly unwanted user input that can alter the database (SQL-injection)
+            if 'user_id' in args:
+                cur.execute("SELECT id, category, name, image, price, description, created, user_id FROM Listings WHERE user_id=(?)", (args[1],))
+            else:
+                cur.execute("SELECT id, category, name, image, price, description, created, user_id FROM Listings")
+            rows = cur.fetchall()
+            listings = []
+            index = 0
+            for listing in rows:
+                listings.append({"id": listing[0], 
+                            "category": listing[1], 
+                            "name": listing[2], 
+                            "image": listing[3], 
+                            "description": listing[5], 
+                            "price": listing[4], 
+                            "created": listing[6], 
+                            "user_name": listing[7]
+                            })
+                index += 1
+            return listings
+    except sqlite3.Error as e:
+        # this prints the sqlite3 Error to console if some error occurs
+        print(f"Database error: %s" %e)
+        return rows
+
+def delete_listings(*args):
+    try:
+        # Connect to the SQLite database
+        with sqlite3.connect('database.db') as connection:
+            cursor = connection.cursor()
+            cursor.execute(f"DELETE from Listings WHERE id=(?)", (args[0],))
+            connection.commit()
+            if True in args:
+                cursor.execute(f"SELECT id, name from Listings WHERE id={args[0]}")
+                rows = cursor.fetchone()
+                # Check if any rows were fetched
+                if rows:
+                    print(f"could not delete listing with id {args[0]}, no error")
+                else:
+                    print(f"deleted listing with id {args[0]} successful")
+    except sqlite3.Error as e:
+        # Print the error if one occurs
+        print(f"Database error: {e}")

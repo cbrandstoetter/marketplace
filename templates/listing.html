@@ -5,12 +5,32 @@
 {% endblock %}
 
 {% block content %}
-    <h1>This is your requested listing:</h1>
-    category: {{ listing['category'] }}
-    {{ listing['image'] }}
-    <a href src="index.html">User: {{ listing['user_id'] }}</a>
-    <h1>{{ listing['name']}}</h1>
-    <h1>price: {{ listing['price'] }}</h1>
-    {{ listing['description'] }}
-    created on: {{ listing['created'] }}
+<a href src="index.html">User: {{ listing['user_id'] }}</a>
+    <div class="container mt-5">
+        <h1 class="mb-4">These are your requested listings:</h1>
+        <div class="row">
+                <div class="col-md-4">
+                    <div class="card mb-4 shadow-sm">
+                        {% if listing.image %}
+                            <img src="{{ url_for('static', filename=listing.image) }}" class="card-img-top" alt="{{ listing.name }}">
+                        {% else %}
+                            <img src="{{ url_for('static', filename='default-image.jpg') }}" class="card-img-top" alt="Default Image">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ listing.name }}</h5>
+                            <p class="card-text">{{ listing.description }}</p>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">Category: {{ listing.category }}</li>
+                                <li class="list-group-item">Price: {{ listing.price }}€</li>
+                                <li class="list-group-item">Created on: {{ listing.created }}</li>
+                                <li class="list-group-item">Posted by: {{ listing.user_name }}</li>
+                            </ul>
+                            <div class="card-footer text-muted">
+                                Listing ID: {{ listing.id }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
 {% endblock %}

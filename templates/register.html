@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %} 
+Register
+{% endblock %}
+
+{% block content %}
+
+<!-- register form -->
+<form class="form" method="POST">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" required>
+    
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" required>
+    
+    <button type="submit">Register</button>
+</form>
+<!-- flash messages -->
+{% with messages = get_flashed_messages() %}
+   {% if messages %}
+      {% for message in messages %}
+         {{ message }}
+      {% endfor %}
+   {% endif %}
+{% endwith %}
+
+{% endblock %}
+

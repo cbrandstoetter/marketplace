@@ -7,18 +7,30 @@ New Listing
 {% block content %}
 <h1>Create a new listing!</h1>
 
-<form method="POST">
-
-    <h1 id="dummy">user_id placeholder</h1>
-    <h1 id="dummy">choose category dropdown placeholer</h1>
-    <h1 id="dummy">Submit image placeholder:</h1>
-    <h1>Listing Name:</h1>
-    <input name="name">
-    <h1>Description:</h1>
-    <input name="description">
-    <h1>Price:</h1>
-    <input name="price">
-    
-    <input type="submit" name="post" value="Submit your listing">
+<form action="/newlisting" class="form" method="POST" enctype="multipart/form-data">
+    <label for="image">Upload an image:</label>
+    <input type="file" name="image" id="image">
+    <h2>choose category dropdown placeholer</h1>
+    <label for="name">Name your listing:</label>
+    <input name="name" type="text">
+    <label for="description" type="text">Describe your listing:</label>
+    <input name="description" style="height:100px">
+    <label for="price">Price:</label>
+    <input name="price" type="number" step="0.01">
+    <input type="submit" value="Submit your listing">
 </form>
+
+<!-- Flash Messages -->
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="alert alert-info mt-4">
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+
+
 {% endblock %}
+

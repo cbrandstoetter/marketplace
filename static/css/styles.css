@@ -1,0 +1,91 @@
+#dummy{
+    background-color: aqua;
+}
+.form {
+    display:flex;
+    flex-direction:column;
+    width: 100%;
+}
+.form label{
+    margin: 5px;
+    font-size:30px;
+}
+.form input{
+    vertical-align: middle;
+    margin: 5px;
+    padding: 5px;
+    background-color:aqua;
+    border: 1px solid blue;
+}
+.form button{
+    background-color:darkcyan;
+    width: 30%;
+    align-self: center;
+}
+.form button:hover {
+    background-color:aqua;
+}
+.form button:active{
+    box-shadow: 0 5px 10px black;
+}
+.profile-image img{
+    max-width: 300px;
+    max-height: 300px;
+}
+
+
+
+.listing-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Space between each listing */
+}
+
+ul {
+    list-style-type: none; /* Remove bullets from the list */
+    padding: 0; /* Remove default padding */
+    margin: 0; /* Remove default margin */
+}
+
+.listing {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.listing-box {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    background-color: #f0f0f0; /* Light grey background */
+    border-radius: 15px; /* Rounded corners */
+    border: 1px solid #ccc; /* Border around the listing */
+    width: 50%; /* Full width of the parent container */
+}
+
+.listing-image {
+    width: 150px; /* Fixed width for the image */
+    height: 150px; /* Fixed height for the image */
+    object-fit: cover; /* Ensure the image covers the box and maintains aspect ratio */
+    margin-right: 20px; /* Space between image and details */
+    border-radius: 10px; /* Round the image corners */
+}
+
+.listing-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.listing-name {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin: 0;
+}
+
+.listing-price {
+    font-size: 1.5em; /* Larger font size for price */
+    font-weight: bold;
+    color:aquamarine; /* Highlight the price with a red color */
+    margin-top: 10px; /* Space between name and price */
+}
