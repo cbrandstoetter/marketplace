@@ -5,5 +5,4 @@
 __pycache__
 /venv
 /.venv
-config.py
 secret.py
