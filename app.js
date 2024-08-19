@@ -1,1 +1,0 @@
-// javascript implementations: delete listing confirmation window, expand showed listings instead of showing in single page

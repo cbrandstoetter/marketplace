@@ -4,14 +4,24 @@ from werkzeug.exceptions import abort
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import Flask, render_template, request, flash, redirect, url_for, session
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user, UserMixin
-from db import listing_by_id, get_all_listings, delete_listings
 
 # flask --app app run
 app = Flask(__name__)
-app.config.from_pyfile('config.py')
 login_manager = LoginManager()
 login_manager.init_app(app)
 
+app.config['DEBUG'] = True
+app.config['WTF_CSRF_ENABLED'] = True
+app.config['UPLOAD_FOLDER'] = 'static'
+app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif'}
+app.config['SECRET_KEY'] = os.environ.get('FLASK_SECRET_KEY', 'default_secret_key')
+
+connection = sqlite3.connect('database.db')
+
+with open('schema.sql') as f:
+    connection.executescript(f.read())
+connection.commit()
+connection.close()
 
 class User(UserMixin):
     def __init__(self, id, username, password_hash, profile_image):
@@ -50,6 +60,96 @@ class User(UserMixin):
         return check_password_hash(self.password_hash, password)
 
 
+def listing_by_id(id):
+# provide the id and get the corresponding listing information as an object (category, name, image, description, price, created, user_id)
+    """
+    this method selects the listing with the requested id and returns information from the database, in a format that can easily be render to html
+    with this method, all listing have to be retrieved manually by providing the id in the address bar, e.g. marketplace.flask/1 for the first listing
+    further implementation should show all listings with basic information like main picture, price and name
+    listings are clickable and return the id to the db, requesting additional information and displaying the full listing
+    """
+    try:
+        with sqlite3.connect('database.db') as connection:
+            cur = connection.cursor()
+            # After research the method was updated to include a parameterized, preventing possibly unwanted user input that can alter the database (SQL-injection)
+            cur.execute("SELECT id, category, name, image, description, price, created, user_id FROM Listings WHERE id=?", (id,))
+            row = cur.fetchone()
+            if row:
+                # this method of extracting the data from sql uses a static approach
+                listing = {
+                    'id': row[0],
+                    'category': row[1],
+                    'name': row[2],
+                    'image': row[3],
+                    'description': row[4],
+                    'price': row[5],
+                    'created': row[6],
+                    'user_id': row[7]
+                }
+                cur.execute("SELECT name FROM User WHERE id=?", (listing['user_id'],))
+                row = cur.fetchone()
+                listing['user_name'] = row[0]
+            else:
+                listing = None
+    except sqlite3.Error as e:
+        # this prints the sqlite3 Error to console if some error occurs
+        print(f"Database error: %s" %e)
+        listing = None
+    return listing
+
+
+
+def get_all_listings(*args):
+    try:
+        with sqlite3.connect('database.db') as connection:
+            cur = connection.cursor()
+            # After research the method was updated to include a parameterized, preventing possibly unwanted user input that can alter the database (SQL-injection)
+            if 'user_id' in args:
+                cur.execute("SELECT id, category, name, image, price, description, created, user_id FROM Listings WHERE user_id=(?)", (args[1],))
+            else:
+                cur.execute("SELECT id, category, name, image, price, description, created, user_id FROM Listings")
+            rows = cur.fetchall()
+            listings = []
+            index = 0
+            for listing in rows:
+                listings.append({"id": listing[0], 
+                            "category": listing[1], 
+                            "name": listing[2], 
+                            "image": listing[3], 
+                            "description": listing[5], 
+                            "price": listing[4], 
+                            "created": listing[6], 
+                            "user_name": listing[7]
+                            })
+                index += 1
+            return listings
+    except sqlite3.Error as e:
+        # this prints the sqlite3 Error to console if some error occurs
+        print(f"Database error: %s" %e)
+        return rows
+
+
+def delete_listings(*args):
+    try:
+        # Connect to the SQLite database
+        with sqlite3.connect('database.db') as connection:
+            cursor = connection.cursor()
+            cursor.execute(f"DELETE from Listings WHERE id=(?)", (args[0],))
+            connection.commit()
+            if True in args:
+                cursor.execute(f"SELECT id, name from Listings WHERE id={args[0]}")
+                rows = cursor.fetchone()
+                # Check if any rows were fetched
+                if rows:
+                    print(f"could not delete listing with id {args[0]}, no error")
+                else:
+                    print(f"deleted listing with id {args[0]} successful")
+    except sqlite3.Error as e:
+        # Print the error if one occurs
+        print(f"Database error: {e}")
+
+
+
 # Initialize the LoginManager
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -78,7 +178,6 @@ def register():
             return redirect(url_for('login'))
         except sqlite3.Error as e:
             print(f"database error: {e}")
-            print(e)
             if str(e) == "UNIQUE constraint failed: User.name":
                 flash('username already taken.')
             else:
@@ -92,7 +191,6 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        print(username, password)
         user = User.find_by_username(username)
         if user and user.verify_password(password):
             login_user(user)
@@ -143,11 +241,11 @@ def profile_listings():
         return redirect(url_for('profile'))
     if request.method == 'POST':
         form = request.form
-        print(form)
         # edit the listing and return to listing page
         if 'edit' in form:
-            print('edit\n#############')
-            print(request.form['edit'])
+            """
+            edit button added in future update!
+            """
         # delete the listing and return to listing page
         elif 'delete' in form:
             # get id from form and delete.
@@ -182,7 +280,6 @@ def get_listing(id):
         # see listing_by_id in db.py for backend implementation
         # escape is used for better security, preventing harmful user input
         listing = listing_by_id(int(id))
-        print(listing['user_name'])
         return render_template('listing.html', listing = listing)
     except sqlite3.Error as e:
         print(f"error: {e}")
@@ -205,9 +302,6 @@ def post_listing():
             if file and allowed_file(file.filename):
                 filename = f"{current_user.id}_lst_{file.filename}"
                 lst["image"] = filename
-                for item in lst:
-                    print(item)
-                    print(lst[item])
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             else:
                 lst["image"] = 'default_listings_image.png'
