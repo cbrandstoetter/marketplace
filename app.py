@@ -154,7 +154,7 @@ def profile_listings():
             # get id from form and delete.
             id = request.form['delete']
             delete_listings(id, True)
-        redirect(url_for('profile_listings'))
+        return redirect(url_for('profile_listings'))
 
 
     return render_template('profile-listings.html', listings=listings, user=current_user)
@@ -183,10 +183,10 @@ def get_listing(id):
         # see listing_by_id in db.py for backend implementation
         # escape is used for better security, preventing harmful user input
         listing = listing_by_id(int(id))
-        print(listing)
+        print(listing['user_name'])
         return render_template('listing.html', listing = listing)
-    except:
-        print("failed")
+    except sqlite3.Error as e:
+        print(f"error: {e}")
         # return 404 if an error occurs
         abort(404)
 

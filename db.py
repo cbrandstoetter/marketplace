@@ -21,7 +21,6 @@ def listing_by_id(id):
             # After research the method was updated to include a parameterized, preventing possibly unwanted user input that can alter the database (SQL-injection)
             cur.execute("SELECT id, category, name, image, description, price, created, user_id FROM Listings WHERE id=?", (id,))
             row = cur.fetchone()
-            print(row)
             if row:
                 # this method of extracting the data from sql uses a static approach
                 listing = {
@@ -32,9 +31,12 @@ def listing_by_id(id):
                     'description': row[4],
                     'price': row[5],
                     'created': row[6],
-                    'user_name': row[7]
+                    'user_id': row[7]
                 }
-                print(listing)
+                cur.execute("SELECT name FROM User WHERE id=?", (listing['user_id'],))
+                row = cur.fetchone()
+                print(row)
+                listing['user_name'] = row[0]
             else:
                 listing = None
     except sqlite3.Error as e:

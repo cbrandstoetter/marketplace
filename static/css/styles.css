@@ -61,6 +61,7 @@ ul {
     border-radius: 15px; /* Rounded corners */
     border: 1px solid #ccc; /* Border around the listing */
     width: 50%; /* Full width of the parent container */
+    margin:20px;
 }
 
 .listing-image {
@@ -86,6 +87,15 @@ ul {
 .listing-price {
     font-size: 1.5em; /* Larger font size for price */
     font-weight: bold;
-    color:aquamarine; /* Highlight the price with a red color */
+    color:cornflowerblue; /* Highlight the price with a red color */
     margin-top: 10px; /* Space between name and price */
+}
+
+.listing-buttons button {
+    font-size:1em;
+    margin: 10px;
+    margin-left: 50px;
+    border: solid black 3px;
+    border-radius: 10px;
+    padding: 10px;
 }

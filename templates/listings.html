@@ -10,7 +10,7 @@ Listings
     <ul>
         {% for listing in listings %}
         <li class="listing">
-            <div class="listing-box">
+            <div class="listing-box" onclick="window.location.href='{{ url_for('get_listing', id=listing.id) }}'">
                 <img src="{{ url_for('static', filename=listing.image if listing.image else 'default-image.jpg') }}" alt="{{ listing.name }}" class="listing-image">
                 <div class="listing-details">
                     <h3 class="listing-name">{{ listing.name }}</h3>
@@ -18,8 +18,6 @@ Listings
                 </div>
             </div>
         </li>
-        <button>edit</button>
-        <button>delete</button>
         {% endfor %}
     </ul>
 </div>

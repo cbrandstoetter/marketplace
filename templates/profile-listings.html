@@ -14,16 +14,19 @@
                 <img src="{{ url_for('static', filename=listing.image if listing.image else 'default-image.jpg') }}" alt="{{ listing.name }}" class="listing-image">
                 <div class="listing-details">
                     <h3 class="listing-name">{{ listing.name }}</h3>
-                    <div class="listing-price">{{ listing.price }}</div>
+                    <div class="listing-price">{{ listing.price }}€</div>
                 </div>
             </div>
+            <form method="POST">
+                <div class="listing-buttons">
+                    <button type="submit" value={{listing.id}} name="edit">edit listing</button>
+                </div>                
+                <div class="listing-buttons">
+                    <button type="submit" value={{listing.id}} name="delete" style="background-color: red; color:white">delete listing</button>
+                </div>                
+            </form>
         </li>
-        <form method="POST">
-            <button type="submit" value={{listing.id}} name="delete">delete listing</button>
-        </form>
-        <form method="POST" name="edit">
-            <button type="submit" value={{listing.id}} name="edit">edit listing</button>
-        </form>
+
 
         {% endfor %}
     </ul>
