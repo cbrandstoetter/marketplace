@@ -1,10 +1,7 @@
-"""
-import secrets
-print(secrets.token_hex(16))
-"""
+import os
 
-SECRET_KEY = '9d0e0f1d78a7b9574851cba767848bf8'
 DEBUG = True
 WTF_CSRF_ENABLED = True
 UPLOAD_FOLDER = 'static'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+SECRET_KEY = os.environ.get('FLASK_SECRET_KEY', 'default_secret_key')
