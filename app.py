@@ -4,7 +4,7 @@ from werkzeug.exceptions import abort
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import Flask, render_template, request, flash, redirect, url_for, session
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user, UserMixin
-from db import listing_by_id, new_listing, get_all_listings, delete_listings
+from db import listing_by_id, get_all_listings, delete_listings
 
 # flask --app app run
 app = Flask(__name__)

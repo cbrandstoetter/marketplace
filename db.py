@@ -46,65 +46,6 @@ def listing_by_id(id):
     return listing
 
 
-def new_listing(listing):
-    # this method uses a direct approach to redirect the form data to sql
-    # the keywords of the html form are named to match the sql columns to achieve this
-    # this approach is intended to make the application scalable if additional information will be implemented for the Listings table
-    # the alternative would be to extract the data of the form using multiple variables and insert them seperately
-    # image and user_id will be implemented later 
-    # image upload method saves the image to resources and creates a reference
-    # user_id will be handled by login
-    try:
-        # Extract the keys (column names) and values from the dictionary
-        # this method of injecting the data to sql uses a dynamic approach
-        del listing['post']
-        columns = ', '.join(listing.keys())
-        placeholders = ', '.join(['?'] * len(listing))
-        values = tuple(listing.values())
-        # Construct the SQL query
-        sql = f"INSERT INTO Listings ({columns}) VALUES ({placeholders})"
-        with sqlite3.connect('database.db') as connection:
-            cur = connection.cursor()
-            cur.execute(sql, values)
-            connection.commit()
-            connection.close()
-            return True
-    except sqlite3.Error as e:
-        # Print the sqlite3 Error to console if some error occurs
-        print(f"Database error: {e}")
-        return False
-
-
-def get_listings_user(user_id):
-    try:
-        with sqlite3.connect('database.db') as connection:
-            cur = connection.cursor()
-            # After research the method was updated to include a parameterized, preventing possibly unwanted user input that can alter the database (SQL-injection)
-            cur.execute("SELECT id, name, image, price, created FROM Listings WHERE user_id='?'" (user_id, ))
-            rows = cur.fetchall()
-            listings = []
-            index = 0
-            print(rows)
-            for listing in rows:
-                listings.append({"id": listing[0], 
-                            "category": listing[1], 
-                            "name": listing[2], 
-                            "image": listing[3], 
-                            "description": listing[5], 
-                            "price": listing[4], 
-                            "created": listing[6], 
-                            "user_name": listing[7]
-                            })
-                index += 1
-            print(listings)
-            return listings
-    except sqlite3.Error as e:
-        # this prints the sqlite3 Error to console if some error occurs
-        print(f"Database error: %s" %e)
-        listings = False
-        return listings
-    
-
 
 def get_all_listings(*args):
     try:
@@ -135,6 +76,7 @@ def get_all_listings(*args):
         print(f"Database error: %s" %e)
         return rows
 
+
 def delete_listings(*args):
     try:
         # Connect to the SQLite database
@@ -153,3 +95,67 @@ def delete_listings(*args):
     except sqlite3.Error as e:
         # Print the error if one occurs
         print(f"Database error: {e}")
+
+
+
+"""
+def get_listings_user(user_id):
+    try:
+        with sqlite3.connect('database.db') as connection:
+            cur = connection.cursor()
+            # After research the method was updated to include a parameterized, preventing possibly unwanted user input that can alter the database (SQL-injection)
+            cur.execute("SELECT id, name, image, price, created FROM Listings WHERE user_id='?'", (user_id, ))
+            rows = cur.fetchall()
+            listings = []
+            index = 0
+            print(rows)
+            for listing in rows:
+                listings.append({"id": listing[0], 
+                            "category": listing[1], 
+                            "name": listing[2], 
+                            "image": listing[3], 
+                            "description": listing[5], 
+                            "price": listing[4], 
+                            "created": listing[6], 
+                            "user_name": listing[7]
+                            })
+                index += 1
+            print(listings)
+            return listings
+    except sqlite3.Error as e:
+        # this prints the sqlite3 Error to console if some error occurs
+        print(f"Database error: %s" %e)
+        listings = False
+        return listings
+    
+"""
+"""
+def new_listing(listing):
+    # this method uses a direct approach to redirect the form data to sql
+    # the keywords of the html form are named to match the sql columns to achieve this
+    # this approach is intended to make the application scalable if additional information will be implemented for the Listings table
+    # the alternative would be to extract the data of the form using multiple variables and insert them seperately
+    # image and user_id will be implemented later 
+    # image upload method saves the image to resources and creates a reference
+    # user_id will be handled by login
+    try:
+        # Extract the keys (column names) and values from the dictionary
+        # this method of injecting the data to sql uses a dynamic approach
+        del listing['post']
+        columns = ', '.join(listing.keys())
+        placeholders = ', '.join(['?'] * len(listing))
+        values = tuple(listing.values())
+        # Construct the SQL query
+        sql = f"INSERT INTO Listings ({columns}) VALUES ({placeholders})"
+        with sqlite3.connect('database.db') as connection:
+            cur = connection.cursor()
+            cur.execute(sql, values)
+            connection.commit()
+            connection.close()
+            return True
+    except sqlite3.Error as e:
+        # Print the sqlite3 Error to console if some error occurs
+        print(f"Database error: {e}")
+        return False
+
+"""
