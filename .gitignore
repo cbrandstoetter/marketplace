@@ -7,6 +7,8 @@
 secret.py
 database.db
 plan.txt
+planning.txt
+__pycache__
 
 static/*
 !static/default_listings_image.png
