@@ -6,7 +6,7 @@
 /.venv
 secret.py
 database.db
-
+plan.txt
 
 static/*
 !static/default_listings_image.png
