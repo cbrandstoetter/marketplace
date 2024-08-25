@@ -2,16 +2,13 @@
 # config.py
 # planning.txt
 # database.db
-__pycache__
 /venv
 /.venv
 secret.py
 database.db
-planning.txt
 
 
 static/*
 !static/default_listings_image.png
 !static/mini_logo.png
 !static/site_logo.png
-__pycache__/db.cpython-310.pyc
