@@ -30,6 +30,7 @@ CREATE TABLE Messages (
     user_send INTEGER NOT NULL,
     user_receive INTEGER NOT NULL,
     listing_id INTEGER NOT NULL,
+    read INTEGER NOT NULL DEFAULT 0,
     FOREIGN KEY(user_send) REFERENCES User(id),
     FOREIGN KEY(user_receive) REFERENCES User(id), 
     FOREIGN KEY(listing_id) REFERENCES Listings(id)
