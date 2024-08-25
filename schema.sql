@@ -21,13 +21,16 @@ CREATE TABLE Listings (
     FOREIGN KEY (user_id) REFERENCES User(id)
 );
 
+
 CREATE TABLE Messages (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    subject TEXT NOT NULL,
+    subject TEXT,
     message TEXT,
     created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     user_send INTEGER NOT NULL,
     user_receive INTEGER NOT NULL,
+    listing_id INTEGER NOT NULL,
     FOREIGN KEY(user_send) REFERENCES User(id),
-    FOREIGN KEY(user_receive) REFERENCES User(id)
+    FOREIGN KEY(user_receive) REFERENCES User(id), 
+    FOREIGN KEY(listing_id) REFERENCES Listings(id)
 );

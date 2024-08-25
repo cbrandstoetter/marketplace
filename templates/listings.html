@@ -9,15 +9,17 @@ Listings
 <div class="listing-container">
     <ul>
         {% for listing in listings %}
-        <li class="listing">
-            <div class="listing-box" onclick="window.location.href='{{ url_for('get_listing', id=listing.id) }}'">
-                <img src="{{ url_for('static', filename=listing.image if listing.image else 'default-image.jpg') }}" alt="{{ listing.name }}" class="listing-image">
-                <div class="listing-details">
-                    <h3 class="listing-name">{{ listing.name }}</h3>
-                    <div class="listing-price">{{ listing.price }}</div>
-                </div>
-            </div>
-        </li>
+        <a href="{{ url_for('get_listing', id=listing.id) }}" style="display: block;">
+            <li class="listing">
+                <div class="listing-box">
+                    <img src="{{ url_for('static', filename=listing.image if listing.image else 'default_listings_iamge.png') }}" alt="{{ listing.name }}" class="listing-image">
+                    <div class="listing-details">
+                        <h3 class="listing-name">{{ listing.name }}</h3>
+                        <div class="listing-price">{{ listing.price }}</div>
+                    </div>
+                </div>            
+            </li>
+        </a>
         {% endfor %}
     </ul>
 </div>

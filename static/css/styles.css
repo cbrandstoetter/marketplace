@@ -14,11 +14,12 @@
     vertical-align: middle;
     margin: 5px;
     padding: 5px;
-    background-color:aqua;
+    background-color:#ccc;
     border: 1px solid blue;
 }
 .form button{
     background-color:darkcyan;
+    color:white;
     width: 30%;
     align-self: center;
 }
@@ -32,15 +33,6 @@
     max-width: 300px;
     max-height: 300px;
 }
-
-
-
-.listing-container {
-    display: flex;
-    flex-direction: column;
-    gap: 20px; /* Space between each listing */
-}
-
 ul {
     list-style-type: none; /* Remove bullets from the list */
     padding: 0; /* Remove default padding */
@@ -52,7 +44,11 @@ ul {
     justify-content: flex-start;
     align-items: center;
 }
-
+.listing-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Space between each listing */
+}
 .listing-box {
     display: flex;
     align-items: center;
@@ -63,7 +59,6 @@ ul {
     width: 50%; /* Full width of the parent container */
     margin:20px;
 }
-
 .listing-image {
     width: 150px; /* Fixed width for the image */
     height: 150px; /* Fixed height for the image */
@@ -71,7 +66,6 @@ ul {
     margin-right: 20px; /* Space between image and details */
     border-radius: 10px; /* Round the image corners */
 }
-
 .listing-details {
     display: flex;
     flex-direction: column;
@@ -83,14 +77,12 @@ ul {
     font-weight: bold;
     margin: 0;
 }
-
 .listing-price {
     font-size: 1.5em; /* Larger font size for price */
     font-weight: bold;
     color:cornflowerblue; /* Highlight the price with a red color */
     margin-top: 10px; /* Space between name and price */
 }
-
 .listing-buttons button {
     font-size:1em;
     margin: 10px;
@@ -98,4 +90,52 @@ ul {
     border: solid black 3px;
     border-radius: 10px;
     padding: 10px;
+}
+
+
+.link-container {
+    display:flex;
+    flex-direction:column;
+    margin-top:20px;
+    margin-left:30px;
+    margin-right:30px;
+    height:400px;
+    width:auto;
+    overflow-y:auto;
+    background-color:aliceblue;
+}
+.link-box {
+    display: flex;
+    flex-direction: row;
+    gap:10px;
+    align-items:center;
+    cursor: pointer;
+    margin-bottom:5px;
+}
+.link-box:hover {
+    background-color:beige;
+}
+.message-info {
+    display:column;
+    margin-left: 20px;
+}
+.message-name {
+    color:black;
+    font-size: 1.5em;
+}
+.message-message {
+    color:black;
+    font-size: 1.2em;
+    font-style: italic;
+}
+.message-price{
+    font-size: 1.2em;
+    color:cornflowerblue;
+    font-weight: bold;
+}
+.message-image {
+    object-fit:cover;
+    width:100px;
+    height:100px;
+    margin:10px;
 }

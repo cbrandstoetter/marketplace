@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %} 
+    Messages
+{% endblock %}
+
+{% block content %}
+<div class="link-container">
+    {% for lst in listings %}
+    <a href="{{url_for('message_get', id=lst.id)}}" style="text-decoration: none;">
+
+        <div class="link-box" {%if lst.new_message%}style="border-left:solid red 5px;"{%endif%}>
+            <img src = "{{ url_for('static', filename=lst.image) }}" class="message-image">
+            <div class="message-info">
+                <div class="message-name">
+                    {{lst.name}}
+                </div>
+                <div class="message-price">
+                    {{lst.price}}
+                </div>
+                <div class="message-message">
+                    {{lst.last}}
+                </div>
+            </div>
+            
+        </div>
+    </a>
+    {% endfor %}
+</div>
+
+
+<!-- Flash Messages -->
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="alert alert-info mt-4">
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+
+
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %} 
+Send Message
+{% endblock %}
+
+{% block content %}
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="alert alert-info mt-4">
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+<div class="container mt-5">
+    <div class="row">
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm" style="width: 500px;">
+                    {% if listing.image %}
+                        <img src="{{ url_for('static', filename=listing.image) }}" class="card-img-top" alt="{{ listing.name }}">
+                    {% else %}
+                        <img src="{{ url_for('static', filename='default_listings_image.png') }}" class="card-img-top" alt="Default Image">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">message {{ listing.name }}</h5>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Price: {{ listing.price }}€</li>
+                            <li class="list-group-item">Created on: {{ listing.created }}</li>
+                            <li class="list-group-item">
+                                <form class="form" method="POST">
+                                    <input type="text" id="message" name="message" required style="height:200px;">
+                                    <button type="submit">send message</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+    </div>
+</div>
+
+{% endblock %}

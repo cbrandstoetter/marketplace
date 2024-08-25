@@ -12,7 +12,7 @@
                         {% if listing.image %}
                             <img src="{{ url_for('static', filename=listing.image) }}" class="card-img-top" alt="{{ listing.name }}">
                         {% else %}
-                            <img src="{{ url_for('static', filename='default-image.jpg') }}" class="card-img-top" alt="Default Image">
+                            <img src="{{ url_for('static', filename='default_listings_image.png') }}" class="card-img-top" alt="Default Image">
                         {% endif %}
                         <div class="card-body">
                             <h5 class="card-title">{{ listing.name }}</h5>
@@ -21,7 +21,14 @@
                                 <li class="list-group-item">Category: {{ listing.category }}</li>
                                 <li class="list-group-item">Price: {{ listing.price }}€</li>
                                 <li class="list-group-item">Created on: {{ listing.created }}</li>
-                                <li class="list-group-item">Posted by: {{ listing.user_name }}</li>
+                                <li class="list-group-item">
+                                    <p>
+                                        Posted by: {{ listing.user_name }} 
+                                    </p>
+                                    <p>
+                                        <button name="send-message" onclick="window.location.href='{{ url_for('send_message', id=listing.id) }}'" style="border-radius:5px;background-color:blue;color:white;">send message</button>
+                                    </p>
+                                </li>
                             </ul>
                             <div class="card-footer text-muted">
                                 Listing ID: {{ listing.id }}
@@ -32,3 +39,8 @@
         </div>
     </div>
 {% endblock %}
+
+<script>
+// add javascript that returns listing.user_id and current_user.id to the send_message function in flask
+
+</script>
