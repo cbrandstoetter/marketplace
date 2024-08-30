@@ -9,8 +9,3 @@ plan.txt
 planning.txt
 __pycache__
 
-static/*
-!static/default_listings_image.png
-!static/mini_logo.png
-!static/site_logo.png
-!static/docs
