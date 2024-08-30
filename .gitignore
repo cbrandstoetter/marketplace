@@ -5,7 +5,6 @@
 /venv
 /.venv
 secret.py
-database.db
 plan.txt
 planning.txt
 __pycache__
