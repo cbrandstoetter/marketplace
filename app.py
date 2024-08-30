@@ -179,6 +179,12 @@ def load_user(user_id):
     return User.get(user_id)
 
 
+@login_manager.unauthorized_handler
+def unauthorized():
+    flash("You need to login or create an account first")
+    return redirect(url_for('login'))
+
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':

@@ -26,7 +26,7 @@
                                         Posted by: {{ listing.user_name }} 
                                     </p>
                                     <p>
-                                        <button name="send-message" onclick="window.location.href='{{ url_for('send_message', id=listing.id) }}'" style="border-radius:5px;background-color:blue;color:white;">send message</button>
+                                        <button id="message-button" style="border-radius:5px;background-color:blue;color:white;">send message</button>
                                     </p>
                                 </li>
                             </ul>
@@ -38,9 +38,13 @@
                 </div>
         </div>
     </div>
+    
+    <script>
+        // selects message-button, calls send-message in flask with the current listing id 
+        console.log('hallo')
+        document.getElementById('message-button').addEventListener('click', function() {
+            console.log('button was clicked!');
+            window.location.href = `{{url_for('send_message', id=listing.id)}}`;
+        });
+    </script>
 {% endblock %}
-
-<script>
-// add javascript that returns listing.user_id and current_user.id to the send_message function in flask
-
-</script>
