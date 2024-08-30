@@ -213,7 +213,7 @@ def login():
         if user and user.verify_password(password):
             login_user(user)
             flash('Logged in successfully.')
-            return redirect(url_for('index'))
+            return redirect(url_for('marketplace'))
         else:
             flash('Invalid username or password.')
 
@@ -226,7 +226,7 @@ def logout():
     logout_user()
     # Clear any remaining flash messages
     session.pop('_flashes', None)
-    return redirect(url_for('index'))
+    return redirect(url_for('marketplace'))
 
 def allowed_file(filename):
     ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
@@ -248,6 +248,10 @@ def profile():
 
     return render_template('profile.html', user=current_user)
 
+
+@app.route("/", methods=['GET'])
+def index():
+    return render_template("index.html")
 
 
 @app.route("/yourlistings", methods=['POST', 'GET'])
@@ -281,13 +285,13 @@ def about():
     return render_template('about.html')
 
 
-@app.route('/')
-def index():
+@app.route('/marketplace')
+def marketplace():
     if current_user.is_authenticated:
         print(f"User {current_user.username} is logged in")
     else:
         print("No user is logged in")
-    return render_template('index.html')
+    return render_template('marketplace.html')
 
 
 @app.route("/listing/<id>")
@@ -333,11 +337,11 @@ def post_listing():
             conn.commit()
             conn.close()
             flash("listing was posted!")
-            return redirect(url_for('index'))
+            return redirect(url_for('marketplace'))
     # handle if user is not logged in
     else:
         flash("you have to be create an account to create a listing.")
-        return render_template('index.html')
+        return render_template('marketplace.html')
 
     return render_template('listing-creation.html', user=current_user)
 
