@@ -39,25 +39,22 @@ ul {
     margin: 0; /* Remove default margin */
 }
 
-.listing {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-}
 .listing-container {
     display: flex;
     flex-direction: column;
-    gap: 20px; /* Space between each listing */
+    gap: 10px; /* Space between each listing */
+    align-items: start;
 }
 .listing-box {
     display: flex;
-    align-items: center;
-    padding: 20px;
     background-color: #f0f0f0; /* Light grey background */
     border-radius: 15px; /* Rounded corners */
-    border: 1px solid #ccc; /* Border around the listing */
-    width: 50%; /* Full width of the parent container */
-    margin:20px;
+    border: 1px solid black; /* Border around the listing */
+    flex-direction:row;
+    padding:5px;
+}
+.listing-box:hover {
+    background-color:burlywood;
 }
 .listing-image {
     width: 150px; /* Fixed width for the image */

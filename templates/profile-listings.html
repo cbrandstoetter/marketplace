@@ -7,9 +7,8 @@
 
 {% block content %}
 <div class="listing-container">
-    <ul>
         {% for listing in listings %}
-        <li class="listing">
+        <div style="display:flex;flex-direction: row;align-items: center;">
             <div class="listing-box">
                 <img src="{{ url_for('static', filename=listing.image if listing.image else 'default-image.jpg') }}" alt="{{ listing.name }}" class="listing-image">
                 <div class="listing-details">
@@ -17,7 +16,7 @@
                     <div class="listing-price">{{ listing.price }}€</div>
                 </div>
             </div>
-            <form method="POST">
+            <form method="POST" style="display:flex;flex-direction: column;">
                 <div class="listing-buttons">
                     <button type="submit" value={{listing.id}} name="edit">edit listing</button>
                 </div>                
@@ -25,11 +24,8 @@
                     <button type="submit" value={{listing.id}} name="delete" style="background-color: red; color:white">delete listing</button>
                 </div>                
             </form>
-        </li>
-
-
+        </div>
         {% endfor %}
-    </ul>
 </div>
 
 <!-- Flash Messages -->

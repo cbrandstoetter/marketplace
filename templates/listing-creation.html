@@ -12,10 +12,11 @@ New Listing
     <input type="file" name="image" id="image">
     <h2>choose category dropdown placeholer</h1>
     <label for="name">Name your listing:</label>
-    <input name="name" type="text">
+    <input name="name" type="text" required>
     <label for="description" type="text">Describe your listing:</label>
     <input name="description" style="height:100px">
     <label for="price">Price:</label>
+    <input name="price" type="number" step="0.01" required min="0">
     <input name="price" type="number" step="0.01">
     <input type="submit" value="Submit your listing">
 </form>
