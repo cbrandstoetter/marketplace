@@ -15,7 +15,7 @@ CREATE TABLE Listings (
     name TEXT NOT NULL,
     image TEXT,
     description TEXT NOT NULL,
-    price REAL,
+    price DECIMAL(6,2),
     created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     user_id INTEGER NOT NULL,
     FOREIGN KEY (user_id) REFERENCES User(id)
