@@ -15,3 +15,5 @@ Technology:
 - sqlite3 as database with manual queries
 - User handling with flask-login
 - Password encryption
+
+[doku picture](/docs/screenshot/landing-page.png)
