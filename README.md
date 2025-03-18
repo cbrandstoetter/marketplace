@@ -16,4 +16,4 @@ Technology:
 - User handling with flask-login
 - Password encryption
 
-[doku picture](/docs/screenshot/landing-page.png)
+![doku picture](static/docs/screenshot/landing-page.png)
