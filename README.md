@@ -21,8 +21,8 @@ Technologies and their implementation:
 - jinja template allows control structures, this is utilized for html generation (for loop)
 - sqlite3 as database with manual queries to practice SQL syntax. With my current knowledge i would transition to using an ORM, SQLAlchemy in the case of flask
 
-Landing page
-![Landing page](static/docs/screenshot/landing-page.png)
+Landing page with simple UI, basic CSS
+![Landing page](static/docs/screenshot/landing_page.png)
 
 Shows an error, only logged in users can post something
 ![Error Handling](static/docs/screenshot/error.png)
