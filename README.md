@@ -1,5 +1,5 @@
 Educational project to learn web development in Python Flask. A fully functional second hand market where you can register as a user, post the items you want to sell, look at items of other people and message each others.
-Additionally, i deployed the Application on the provider "digital ocean" for practice. I used Gunicorn to serve the application.
+I deployed the Application on the provider "digital ocean" once for practice. I used Gunicorn to serve the application on the cloud.
 
 Features:
 - register as a user, upload a profile picture
