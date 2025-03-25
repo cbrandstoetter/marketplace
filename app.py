@@ -83,7 +83,7 @@ def listing_by_id(id):
 # provide the id and get the corresponding listing information as an object (category, name, image, description, price, created, user_id)
     """
     this method selects the listing with the requested id and returns information from the database, in a format that can easily be render to html
-    with this method, all listing have to be retrieved manually by providing the id in the address bar, e.g. marketplace.flask/1 for the first listing
+    with this method, all listing have to be retrieved manually by providing the id in the address bar, e.g. baseURL/1 for the first listing
     further implementation should show all listings with basic information like main picture, price and name
     listings are clickable and return the id to the db, requesting additional information and displaying the full listing
     """
@@ -255,11 +255,6 @@ def profile():
     return render_template('profile.html', user=current_user)
 
 
-@app.route("/", methods=['GET'])
-def index():
-    return render_template("index.html")
-
-
 @app.route("/yourlistings", methods=['POST', 'GET'])
 @login_required
 def profile_listings():
@@ -291,7 +286,7 @@ def about():
     return render_template('about.html')
 
 
-@app.route('/marketplace')
+@app.route('/')
 def marketplace():
     if current_user.is_authenticated:
         print(f"User {current_user.username} is logged in")

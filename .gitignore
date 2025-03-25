@@ -3,5 +3,7 @@
 planning.txt
 database.db
 /venv
-/.venv
 __pycache__
+
+# ignore previous landing page, directly to application
+templates/index.html
