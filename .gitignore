@@ -1,11 +1,7 @@
 # .gitignore
 # config.py
-# planning.txt
-# database.db
+planning.txt
+database.db
 /venv
 /.venv
-secret.py
-plan.txt
-planning.txt
 __pycache__
-
