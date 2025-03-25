@@ -1,25 +1,28 @@
 Educational project to learn web development in Python Flask. A fully functional second hand market where you can register as a user, post the items you want to sell, look at items of other people and message each others.
 I deployed the Application on the provider "digital ocean" once for practice. I used Gunicorn to serve the application on the cloud.
 
-Features:
-- register as a user, upload a profile picture
-- create listings
-- upload pictures of the item
-- advertise your listing with text and pictures
-- look for current listings
-- message the user if you want to buy from them
-- look at your messages and write back and forth
-- other user gets notified on his landing page with an indicator
-- edit and delete your listings
+<h2>Features:</h2>
+<ul>
+  <li>Register as a user and upload a profile picture</li>
+  <li>Create listings for items</li>
+  <li>Upload pictures of the items</li>
+  <li>Advertise your listing with text and images</li>
+  <li>Browse and search for current listings</li>
+  <li>Message the user if you want to buy from them</li>
+  <li>View your messages and communicate back and forth</li>
+  <li>Other users are notified with an indicator on their landing page</li>
+  <li>Edit and delete your listings</li>
+</ul>
 
-Technologies and their implementation:
-- Python Flask is used as a framework, for its ease of use and simple syntax
-- Flask-login is used to implement user handling
-- password hashing, passwords are stored in the database as a hash
-- the secret key for hashing is stored in the environment to protect the key
-- pages are generated dynamically, using jinja template
-- jinja template allows control structures, this is utilized for html generation (for loop)
-- sqlite3 as database with manual queries to practice SQL syntax. With my current knowledge i would transition to using an ORM, SQLAlchemy in the case of flask
+<h2>Technologies and their Implementation:</h2>
+<ul>
+  <li><strong>Framework:</strong> Python Flask is used as a framework for its ease of use and simple syntax</li>
+  <li><strong>User Handling:</strong> Flask-login is used to manage user sessions</li>
+  <li><strong>Password Hashing:</strong> Passwords are hashed with Werkzeug.security. No plain-text passwords are saved in the database</li>
+  <li><strong>Key Handling:</strong> The secret key for Flask sessions is retrieved from an environment variable, ensuring that no keys are exposed in the source code</li>
+  <li><strong>Rendering:</strong> Pages are generated dynamically using Jinja templates, which allow for control structures (such as loops) to generate HTML</li>
+  <li><strong>Database:</strong> SQLite3 is used with manual queries to practice SQL syntax. With my current knowledge, I would transition to using an ORM, such as SQLAlchemy, for future projects</li>
+</ul>
 
 <h2>Landing page with simple UI, basic CSS</h2>
 <img src="static/docs/screenshot/landing_page.png" width="600px" alt="UI screenshot">
