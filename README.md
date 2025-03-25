@@ -22,6 +22,7 @@ Technologies and their implementation:
 - sqlite3 as database with manual queries to practice SQL syntax. With my current knowledge i would transition to using an ORM, SQLAlchemy in the case of flask
 
 Landing page with simple UI, basic CSS
+
 <img src="static/docs/screenshot/landing_page.png" width=50% height=50% alt="UI screenshot">
 
 Shows an error, only logged in users can post something
