@@ -25,40 +25,40 @@ Technologies and their implementation:
 <img src="static/docs/screenshot/landing_page.png" width="600px" alt="UI screenshot">
 
 <h2>Shows an error, only logged in users can post something</h2>
-<img src="static/docs/screenshot/error.png" alt="Error Handling">
+<img src="static/docs/screenshot/error.png" width="600px" alt="Error Handling">
 
 <h2>Register page</h2>
-<img src="static/docs/screenshot/register.png" alt="Register">
+<img src="static/docs/screenshot/register.png" width="600px" alt="Register">
 
 <h2>Login page</h2>
-<img src="static/docs/screenshot/login.png" alt="Login">
+<img src="static/docs/screenshot/login.png" width="600px" alt="Login">
 
 <h2>Landing page now shows messages and profile, user can logout</h2>
-<img src="static/docs/screenshot/profile.png" alt="Landing Page logged in">
+<img src="static/docs/screenshot/profile.png" width="600px" alt="Landing Page logged in">
 
 <h2>Post an item, providing information. You can upload a picture that gets stored in the database</h2>
-<img src="static/docs/screenshot/item_description.png" alt="Create listing">
+<img src="static/docs/screenshot/item_description.png" width="600px" alt="Create listing">
 
 <h2>Show all listings that are posted, click on the listings you are interested in</h2>
-<img src="static/docs/screenshot/listings.png" alt="Show all listings">
+<img src="static/docs/screenshot/listings.png" width="600px" alt="Show all listings">
 
 <h2>Shows the item in a new page, with all information. Placeholder for categories, work in progress</h2>
-<img src="static/docs/screenshot/item_page.png" alt="Listing page">
+<img src="static/docs/screenshot/item_page.png" width="600px" alt="Listing page">
 
 <h2>I can send a message to the user that posted the item</h2>
-<img src="static/docs/screenshot/send_message.png" alt="Message window">
+<img src="static/docs/screenshot/send_message.png" width="600px" alt="Message window">
 
 <h2>I can see the messages I sent and received</h2>
-<img src="static/docs/screenshot/messages_page.png" alt="Message page">
+<img src="static/docs/screenshot/messages_page.png" width="600px" alt="Message page">
 
 <h2>A minimal chat window, has to be reloaded due to server-side rendering</h2>
-<img src="static/docs/screenshot/minimal_chat.png" alt="Chat">
+<img src="static/docs/screenshot/minimal_chat.png" width="600px" alt="Chat">
 
 <h2>The other user got notified that they have a new message with the red color on messages</h2>
-<img src="static/docs/screenshot/message_notification.png" alt="Message notification">
+<img src="static/docs/screenshot/message_notification.png" width="600px" alt="Message notification">
 
 <h2>I can see the new message in my messages. Messages I haven't read yet have this red indicator</h2>
-<img src="static/docs/screenshot/new_message.png" alt="New message indicator">
+<img src="static/docs/screenshot/new_message.png" width="600px" alt="New message indicator">
 
 <h2>I can look at my profile and show my listings. Here I can edit and delete them</h2>
-<img src="static/docs/screenshot/my_listings.png" alt="Edit and delete listings">
+<img src="static/docs/screenshot/my_listings.png" width="600px" alt="Edit and delete listings">
