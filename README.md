@@ -1,5 +1,4 @@
-<h3>Educational project to learn web development in Python Flask. A fully functional second hand market where you can register as a user, post the items you want to sell, look at items of other people and message each others.
-I deployed the Application on the provider "digital ocean" once for practice. I used Gunicorn to serve the application on the cloud.</h3>
+<h3>Educational project to learn web development in Python Flask. A fully functional second hand market where you can register as a user, post the items you want to sell, look at items of other people and message each other.
 
 <h2>Features:</h2>
 <ul>
@@ -22,6 +21,7 @@ I deployed the Application on the provider "digital ocean" once for practice. I 
   <li><strong>Key Handling:</strong> The secret key for Flask sessions is retrieved from an environment variable, ensuring that no keys are exposed in the source code</li>
   <li><strong>Rendering:</strong> Pages are generated dynamically using Jinja templates, which allow for control structures (such as loops) to generate HTML</li>
   <li><strong>Database:</strong> SQLite3 is used with manual queries to practice SQL syntax. With my current knowledge, I would transition to using an ORM, such as SQLAlchemy, for future projects</li>
+  <li><strong>Deployment:</strong> Gunicorn will be used as an interface, when the app gets deployed to a production environment. The Sqlite database is initialized manually</li>
 </ul>
 
 <h2>Landing page with simple UI, basic CSS</h2>
