@@ -23,7 +23,7 @@ Technologies and their implementation:
 
 Landing page with simple UI, basic CSS
 
-<img src="static/docs/screenshot/landing_page.png" width=400px alt="UI screenshot">
+<img src="static/docs/screenshot/landing_page.png" width=800px alt="UI screenshot">
 
 Shows an error, only logged in users can post something
 ![Error Handling](static/docs/screenshot/error.png)
