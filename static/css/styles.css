@@ -57,9 +57,8 @@ ul {
     background-color:burlywood;
 }
 .listing-image {
-    width: 150px; /* Fixed width for the image */
-    height: 150px; /* Fixed height for the image */
-    object-fit: cover; /* Ensure the image covers the box and maintains aspect ratio */
+    max-width: 50px; /* Fixed width for the image */
+    max-height: 80px; /* Fixed height for the image */
     margin-right: 20px; /* Space between image and details */
     border-radius: 10px; /* Round the image corners */
 }
@@ -135,4 +134,20 @@ ul {
     width:100px;
     height:100px;
     margin:10px;
+}
+
+nav {
+background-color: #8A6872;
+}
+
+footer {
+    background-color: #562C2C;
+}
+
+body {
+    background: linear-gradient(to right, #CF9893, #FFF3B0);
+}
+
+h1 {
+    color: #443850 !important
 }

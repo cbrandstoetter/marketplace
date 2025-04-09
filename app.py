@@ -10,11 +10,35 @@ app = Flask(__name__)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-app.config['DEBUG'] = True
+app.config['DEBUG'] = False
 app.config['WTF_CSRF_ENABLED'] = True
 app.config['UPLOAD_FOLDER'] = 'static'
 app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif'}
 app.config['SECRET_KEY'] = os.environ.get('FLASK_SECRET_KEY', 'default_secret_key')
+
+
+# def getCategoryFromId(categoryId):
+#     categories = [
+#         "Toys",
+#         "Electronics",
+#         "Clothing",
+#         "Books",
+#         "Furniture",
+#         "Tools",
+#         "Sports",
+#         "Games",
+#         "Music",
+#         "Antiques",
+#         "Vehicles",
+#         "Real Estate",
+#         "Garden",
+#         "Computers",
+#         "Accessories"
+#     ]
+#     try:
+#         return categories[categoryId - 1]  # subtract 1 because lists are 0-indexed
+#     except IndexError:
+#         return "Unknown"
 
 
 class User(UserMixin):
@@ -46,8 +70,7 @@ class User(UserMixin):
                 if any(row[0]==0 for row in rows):
                     return True
         except sqlite3.Error as e:
-            # Print the error if one occurs
-            print(f"Database error: {e}")
+            # Flash the error if one occurs
             flash('database error')
 
     @staticmethod
@@ -59,7 +82,6 @@ class User(UserMixin):
         user = cursor.fetchone()
         conn.close()
         if user is None:
-            print("username is not in database")
             return None
         return User(user[0], user[1], user[2], user[3])
 
@@ -80,12 +102,9 @@ class Message:
 
 
 def listing_by_id(id):
-# provide the id and get the corresponding listing information as an object (category, name, image, description, price, created, user_id)
     """
-    this method selects the listing with the requested id and returns information from the database, in a format that can easily be render to html
-    with this method, all listing have to be retrieved manually by providing the id in the address bar, e.g. baseURL/1 for the first listing
-    further implementation should show all listings with basic information like main picture, price and name
-    listings are clickable and return the id to the db, requesting additional information and displaying the full listing
+    this method selects the listing with the requested id from the database;
+    keys -> id, category, name, image, description, price, created, user_id
     """
     try:
         with sqlite3.connect('database.db') as connection:
@@ -111,8 +130,6 @@ def listing_by_id(id):
             else:
                 listing = None
     except sqlite3.Error as e:
-        # this prints the sqlite3 Error to console if some error occurs
-        print(f"Database error: %s" %e)
         listing = None
     return listing
 
@@ -141,10 +158,8 @@ def get_all_listings(*args):
                             "user_name": listing[7]
                             })
                 index += 1
-            return listings
+            return listings[1:]
     except sqlite3.Error as e:
-        # this prints the sqlite3 Error to console if some error occurs
-        print(f"Database error: %s" %e)
         return rows
 
 
@@ -158,14 +173,10 @@ def delete_listings(*args):
             if True in args:
                 cursor.execute(f"SELECT id, name from Listings WHERE id={args[0]}")
                 rows = cursor.fetchone()
-                # Check if any rows were fetched
-                if rows:
-                    print(f"could not delete listing with id {args[0]}, no error")
-                else:
-                    print(f"deleted listing with id {args[0]} successful")
     except sqlite3.Error as e:
-        # Print the error if one occurs
-        print(f"Database error: {e}")
+        # Flash the error if one occurs
+        flash("Database error occurred.")
+        # WIP add error logging
 
 
 # Initialize the LoginManager
@@ -197,17 +208,44 @@ def register():
             cursor.execute("INSERT INTO User (name, password_hash) VALUES (?, ?)", (username, password_hash))
             conn.commit()
             conn.close()
-            print('New user registered!')
             flash('you registered successfully!')
-            return redirect(url_for('login'))
+            return redirect(url_for('register'))
         except sqlite3.Error as e:
-            print(f"database error: {e}")
             if str(e) == "UNIQUE constraint failed: User.name":
                 flash('username already taken.')
             else:
                 flash('unknown database error')
     
     return render_template('register.html')
+
+@app.route('/demo', methods=['GET', 'POST'])
+def demo():
+    try:
+        with sqlite3.connect('database.db') as connection:
+            cur = connection.cursor()
+            if(User.find_by_username('Demo_user')):
+                cur.execute('delete from User where name=?', ('Demo_user',))
+            cur.execute('insert into User (name, password_hash) VALUES (?, ?)', (
+                'Demo_user',
+                'scrypt:32768:8:1$rS1v7gcBStl4KTn2$bf21b154714df13126bdd814eceaf5eb4adf380e9b730dbe4c2662b90147aa3607ee9107e4060ecdf07a4a388235a3668e115282d167cb96fb91cf1a48bc73fb'
+            ))
+            connection.commit()
+            user = User.find_by_username('Demo_user')
+            login_user(user)
+            cur.execute('insert into Messages (subject, message, user_send, user_receive, listing_id) ' \
+                        'values (?, ?, ?, ?, ?)', (
+                            'Welcome',
+                            'Here you can find your messages. You can message a listing to test it out.',
+                            1,
+                            user.id,
+                            1
+                        ))
+    except sqlite3.Error as e:
+        flash('database error')
+    flash("Welcome, to the homepage! You are logged in as a Demo-User.")
+    return redirect(url_for('marketplace'))
+    
+
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -235,14 +273,23 @@ def logout():
     return redirect(url_for('marketplace'))
 
 def allowed_file(filename):
-    ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+    MAX_FILE_SIZE = 5 * 1024 * 1024  # 5 MB
+    ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+    if not('.' in filename.filename and filename.filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS):
+        filename.seek(0)
+        return False
+    if len(filename.read()) > MAX_FILE_SIZE:
+        filename.seek(0)
+        return False
+    return True
+
+
 @app.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile():
     if request.method == 'POST':
         file = request.files.get('image')
-        if file and allowed_file(file.filename):
+        if file and allowed_file(file):
             filename = f"{current_user.id}_{file.filename}"
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             conn = sqlite3.connect('database.db')
@@ -251,6 +298,10 @@ def profile():
             conn.commit()
             conn.close()
             return redirect(url_for('profile'))
+        else:
+            flash("Only .jpeg and .png allowed. Maximum file size: 5MB")
+            return redirect(url_for('profile'))
+
 
     return render_template('profile.html', user=current_user)
 
@@ -266,6 +317,8 @@ def profile_listings():
         form = request.form
         # edit the listing and return to listing page
         if 'edit' in form:
+            flash('You have no listings yet. please create a listings to show and edit listings')
+
             """
             edit button added in future update!
             """
@@ -280,7 +333,6 @@ def profile_listings():
     return render_template('profile-listings.html', listings=listings, user=current_user)
 
 
-
 @app.route('/about')
 def about():
     return render_template('about.html')
@@ -288,11 +340,7 @@ def about():
 
 @app.route('/')
 def marketplace():
-    if current_user.is_authenticated:
-        print(f"User {current_user.username} is logged in")
-    else:
-        print("No user is logged in")
-    return render_template('marketplace.html')
+    return render_template('new-design.html')
 
 
 @app.route("/listing/<id>")
@@ -300,34 +348,35 @@ def get_listing(id):
     try:
         # this returns listing data as values for html
         # listing will be given as a dictionary that can be accessed with jinja at the desired place for flexible design
-        # see listing_by_id in db.py for backend implementation
         # escape is used for better security, preventing harmful user input
         listing = listing_by_id(int(id))
         if not listing:
             abort(404)
         return render_template('listing.html', listing = listing)
     except sqlite3.Error as e:
-        print(f"error: {e}")
         # return 404 if an error occurs
         abort(404)
 
 
 @app.route("/newlisting", methods=["POST", "GET"])
 # this method sends form data to be processed by db handler
-# the keywords of the html form are named to match the sql columns to achieve this
+# the keywords of the html form are named to match the sql columns
 def post_listing():
     if current_user.is_authenticated:
         if request.method == 'POST':
             lst = request.form.to_dict()
             # placeholder for future implementations: user_id, category, image 
-            lst["category"] = 1
             lst["user_id"] = current_user.id
             # get and save file
             file = request.files.get('image')
-            if file and allowed_file(file.filename):
-                filename = f"{current_user.id}_lst_{file.filename}"
-                lst["image"] = filename
-                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            if file:
+                if allowed_file(file):
+                    filename = f"{current_user.id}_lst_{file.filename}"
+                    lst["image"] = filename
+                    file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                else:
+                    flash("Only .jpeg and .png allowed. Maximum file size: 5MB")
+                    return render_template('listing-creation.html', user=current_user)
             else:
                 lst["image"] = 'default_listings_image.png'
             # save listing to database
@@ -341,8 +390,7 @@ def post_listing():
             return redirect(url_for('marketplace'))
     # handle if user is not logged in
     else:
-        flash("you have to be create an account to create a listing.")
-        return render_template('marketplace.html')
+        return redirect(url_for('register'))
 
     return render_template('listing-creation.html', user=current_user)
 
@@ -352,8 +400,10 @@ def post_listing():
 def show_listings():
     listings = get_all_listings()
     if not listings:
-        return render_template('error.html', errormessage = "The Listings could not be displayed, and unknown error occurred")
+        flash("No listings available at the moment.", "warning")  # Flash a message
+        return redirect(url_for('marketplace'))  # Redirect to the same route to re-render the page
     return render_template('listings.html', listings = listings)
+
 
 @app.route("/messaging/<id>", methods=["POST", "GET"])
 @login_required
@@ -372,8 +422,7 @@ def send_message(id):
                 connection.commit()
                 flash('message sent')
         except sqlite3.Error as e:
-            # Print the error if one occurs
-            print(f"Database error: {e}")
+            # Flash the error if one occurs
             flash('database error')
     return render_template('send-message.html', listing = listing)
 
@@ -401,13 +450,14 @@ def get_messages():
                 cur.execute("select name, price, image from listings where id=?",(listing_id,))
                 data = cur.fetchone()
                 # overview data to dict
-                last_message = cur.execute("select message,read,user_receive from Messages where (user_receive=? OR user_send=?) AND listing_id=? order by created DESC",(current_user.id,current_user.id,listing_id)).fetchone()
+                last_message = cur.execute("select message,read,user_receive,user_send from Messages where (user_receive=? OR user_send=?) AND listing_id=? order by created DESC",(current_user.id,current_user.id,listing_id)).fetchone()
                 # check if a new message in chat for later implementation:
+                contact = last_message[2] if not last_message[2] == current_user.id else last_message[3]
+                contact_name = User.get(contact).username
                 is_new = (True if (last_message[1]==0 and last_message[2]==current_user.id) else False)
-                listings_overview.append({'name':data[0],'price':data[1],'image':data[2],'id':listing_id,'new_message':is_new,'last':last_message[0]})
+                listings_overview.append({'name':data[0],'price':data[1],'image':data[2],'id':listing_id,'new_message':is_new,'last':last_message[0], 'contact':contact_name})
     except sqlite3.Error as e:
-            # Print the error if one occurs
-            print(f"Database error: {e}")
+            # Flash the error if one occurs
             flash('database error')
     
     return render_template('messages.html', listings=listings_overview)
@@ -426,8 +476,7 @@ def message_get(id):
                 cur.execute('insert into Messages (message,user_send,user_receive,listing_id) values (?,?,?,?)',(message,current_user.id,receiver,id))
                 connection.commit()
         except sqlite3.Error as e:
-                # Print the error if one occurs
-                print(f"Database error: {e}")
+                # Flash the error if one occurs
                 flash('database error')
         
     try:
@@ -444,8 +493,7 @@ def message_get(id):
             user_with = cur.execute("SELECT user_send, user_receive FROM Messages where (user_receive=? OR user_send=?) AND listing_id=?", (current_user.id,current_user.id,id)).fetchone()
             user_with = [id for id in user_with if id!=current_user.id]
     except sqlite3.Error as e:
-            # Print the error if one occurs
-            print(f"Database error: {e}")
+            # Flash the error if one occurs
             flash('database error')
     
     return render_template('messages-chat.html', messages=messages, user_with=user_with)

@@ -5,11 +5,12 @@
 {% endblock %}
 
 {% block content %}
-<div class="link-container">
+<div class="link-container" style="border-radius:6px;padding:2px;width:80%;">
     {% for lst in listings %}
     <a href="{{url_for('message_get', id=lst.id)}}" style="text-decoration: none;">
 
-        <div class="link-box" {%if lst.new_message%}style="border-left:solid red 5px;"{%endif%}>
+        <div class="link-box" {%if lst.new_message%}style="border:solid red 5px;border-radius:6px;"
+        {% else %}style="border:solid black 2px;border-radius:6px;"{%endif%}>
             <img src = "{{ url_for('static', filename=lst.image) }}" class="message-image">
             <div class="message-info">
                 <div class="message-name">
@@ -19,8 +20,12 @@
                     {{lst.price}}
                 </div>
                 <div class="message-message">
-                    {{lst.last}}
+                    {{ lst.last[:40] ~ (' ...' if lst.last|length > 40 else '') }}
                 </div>
+                
+            </div>
+            <div style="font-size:1.5em;color:burlywood;margin-left: 50px;">
+                von: {{ lst.contact }}
             </div>
             
         </div>

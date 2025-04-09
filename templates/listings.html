@@ -1,24 +1,78 @@
 {% extends 'base.html' %}
 
-{% block title %} 
+{% block title %}
 Listings
 {% endblock %}
 
 {% block content %}
+<div class="container mt-3 p-2">
+  <!-- Category Buttons -->
+  <div class="btn-group mb-3" role="group" aria-label="Category buttons">
+    <button type="button" class="btn btn-outline-primary category-btn" data-category="Toys">Toys</button>
+    <button type="button" class="btn btn-outline-primary category-btn" data-category="Electronics">Electronics</button>
+    <button type="button" class="btn btn-outline-primary category-btn" data-category="Clothing">Clothing</button>
+    <button type="button" class="btn btn-outline-primary category-btn" data-category="Books">Books</button>
+    <button type="button" class="btn btn-outline-primary category-btn" data-category="Furniture">Furniture</button>
+    <button type="button" class="btn btn-outline-primary category-btn" data-category="Tools">Tools</button>
+    <button type="button" class="btn btn-outline-primary category-btn" data-category="Sports">Sports</button>
+    <button type="button" class="btn btn-outline-primary category-btn" data-category="Games">Games</button>
+    <button type="button" class="btn btn-outline-primary category-btn" data-category="Music">Music</button>
+    <button type="button" class="btn btn-outline-primary category-btn" data-category="Antiques">Antiques</button>
+    <button type="button" class="btn btn-outline-primary category-btn" data-category="Vehicles">Vehicles</button>
+    <button type="button" class="btn btn-outline-primary category-btn" data-category="Real Estate">Real Estate</button>
+    <button type="button" class="btn btn-outline-primary category-btn" data-category="Garden">Garden</button>
+    <button type="button" class="btn btn-outline-primary category-btn" data-category="Computers">Computers</button>
+    <button type="button" class="btn btn-outline-primary category-btn" data-category="Accessories">Accessories</button>
+  </div>
 
-<div class="listing-container">
+  <!-- Scrollable container for the card rows -->
+  <div class="listing-container d-flex flex-wrap overflow-auto pb-3" 
+       style="max-height: 600px; overflow-y: auto; scrollbar-width: thin; scrollbar-color: #5a5a5a #f1f1f1;">
     {% for listing in listings %}
-        <a href="{{ url_for('get_listing', id=listing.id) }}" style="text-decoration:none;width:100%">
-            <div class="listing-box">
-                <img src="{{ url_for('static', filename=listing.image if listing.image else 'default_listings_iamge.png') }}" alt="{{ listing.name }}" class="listing-image">
-                <div class="listing-details">
-                    <h3 class="listing-name">{{ listing.name }}</h3>
-                    <div class="listing-price">{{ listing.price }}€</div>
-                </div>
-            </div>            
-        </a>
+      <a href="{{ url_for('get_listing', id=listing.id) }}" class="listing-item" style="text-decoration:none;" data-category="{{ listing.category }}">
+        <!-- Card with row layout -->
+        <div class="card listing-card shadow-sm mb-3" style="width: 280px; border-radius: 8px;">
+          <div class="card-body d-flex flex-row align-items-center">
+            <!-- Image with rounded corners -->
+            <img src="{{ url_for('static', filename=listing.image if listing.image else 'default_listings_image.png') }}"
+                alt="{{ listing.name }}" class="listing-image">
+
+            <div class="listing-text ms-3">
+              <!-- Title of the listing -->
+              <h5 class="card-title text-truncate" style="max-width: 180px;">{{ listing.name }}</h5>
+              <!-- Highlighted price -->
+              <p class="card-text price text-primary fw-bold">{{ listing.price }}€</p>
+            </div>
+          </div>
+        </div>
+      </a>
     {% endfor %}
+  </div>
 </div>
 
+{% endblock %}
+{% block scripts %}
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Listen for category button clicks
+      const buttons = document.querySelectorAll('.category-btn');
+      const listingItems = document.querySelectorAll('.listing-item');
 
+      buttons.forEach(button => {
+        button.addEventListener('click', function() {
+          const selectedCategory = this.getAttribute('data-category');
+
+          // Show all listings if "All" is selected, otherwise filter by category
+          listingItems.forEach(item => {
+            const itemCategory = item.getAttribute('data-category');
+            if (selectedCategory === "All" || itemCategory === selectedCategory) {
+              item.style.display = "block"; // Show the item
+            } else {
+              item.style.display = "none"; // Hide the item
+            }
+          });
+        });
+      });
+    });
+  </script>
 {% endblock %}

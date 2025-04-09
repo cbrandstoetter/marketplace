@@ -1,34 +1,50 @@
 {% extends 'base.html' %}
 
-{% block title %} 
-    Messages
+{% block title %}
+Messages
 {% endblock %}
 
 {% block content %}
-{%for message in messages%}
-<p {%if message.user%}style="background-color:blue;margin-left:auto;"{%else%}style="background-color:green;margin-right:auto;"{%endif%}>
-{{message.message}}
-</p>
-<p>
-{{message.created}}
-</p>
-{% endfor %}
-<form class="form" method="POST">
-    <label for="message">message:</label>
-    <input type="text" id="message" name="message" required>
-    <input type="hidden" id="receiver" name="receiver" value={{user_with}}>
-    <button type="submit">send message</button>
+<p></p>
+
+    {% for message in messages %}
+        <div {% if message.user %}style="background-color:blue; margin-left:auto; padding:4px; border-radius:4px" 
+            {% else %}style="background-color:green; margin-right:auto; padding:4px; border-radius:4px" {% endif %}>
+            <p style="margin: 0; font-size: 1.4em;">
+                {{ message.message }}
+            </p>
+        </div>
+
+        <div {% if message.user %}style="margin-left:auto; padding:4px; border-radius:4px" 
+            {% else %}style="margin-right:auto; padding:4px; border-radius:4px" {% endif %}>
+            <p style="margin: 0; font-size: 1.4em;">
+                {{ message.created }}
+            </p>
+        </div>
+        <p></p>
+    {% endfor %}
+
+
+<form class="form" method="POST"
+    style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%;">
+    <input type="text" id="message" name="message" required style="width: fit-content;" placeholder="enter message">
+    <input type="hidden" id="receiver" name="receiver" value="{{user_with}}">
+    <button type="submit" style="width: fit-content;">send message</button>
 </form>
+<p></p>
+<p></p>
+<p></p>
+
 
 <!-- Flash Messages -->
 {% with messages = get_flashed_messages() %}
-    {% if messages %}
-        <div class="alert alert-info mt-4">
-            {% for message in messages %}
-                <p>{{ message }}</p>
-            {% endfor %}
-        </div>
-    {% endif %}
+{% if messages %}
+<div class="alert alert-info mt-4">
+    {% for message in messages %}
+    <p>{{ message }}</p>
+    {% endfor %}
+</div>
+{% endif %}
 {% endwith %}
 
 

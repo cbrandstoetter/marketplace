@@ -1,9 +1,11 @@
 # .gitignore
-# config.py
 planning.txt
 database.db
 /venv
 __pycache__
+.env
+static/docs/screenshot
+populate_db.txt
 
 # ignore previous landing page, directly to application
 templates/index.html

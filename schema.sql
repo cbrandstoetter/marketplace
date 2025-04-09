@@ -11,7 +11,7 @@ CREATE TABLE User (
 
 CREATE TABLE Listings (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    category INTEGER NOT NULL,
+    category TEXT NOT NULL,
     name TEXT NOT NULL,
     image TEXT,
     description TEXT NOT NULL,

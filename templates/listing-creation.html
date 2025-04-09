@@ -1,37 +1,66 @@
 {% extends 'base.html' %}
 
-{% block title %} 
+{% block title %}
 New Listing
 {% endblock %}
 
 {% block content %}
-<h1>Create a new listing!</h1>
+    <h3 class="mb-3 text-center">Create a New Listing</h3>
 
-<form action="/newlisting" class="form" method="POST" enctype="multipart/form-data">
-    <label for="image">Upload an image:</label>
-    <input type="file" name="image" id="image">
-    <h2>choose category dropdown placeholer</h1>
-    <label for="name">Name your listing:</label>
-    <input name="name" type="text" required>
-    <label for="description" type="text">Describe your listing:</label>
-    <input name="description" style="height:100px">
-    <label for="price">Price:</label>
-    <input name="price" type="number" step="0.01" required min="0">
-    <input name="price" type="number" step="0.01">
-    <input type="submit" value="Submit your listing">
-</form>
+      <form action="/newlisting" method="POST" enctype="multipart/form-data" class="p-3 border rounded bg-light">
 
-<!-- Flash Messages -->
-{% with messages = get_flashed_messages() %}
-    {% if messages %}
-        <div class="alert alert-info mt-4">
-            {% for message in messages %}
-                <p>{{ message }}</p>
-            {% endfor %}
+        <div class="mb-3 p-2">
+          <label for="image" class="form-label small">Image</label>
+          <input type="file" class="form-control form-control-sm" name="image" id="image" style="height: auto;">
         </div>
-    {% endif %}
-{% endwith %}
+
+        <div class="mb-1 p-2">
+          <select class="form-select form-select-sm" id="category" name="category" required
+            style="max-height: 150px; overflow-y: auto">
+            <option value = "" disabled selected>Select a category</option>
+            <option value="Toys">Toys</option>
+            <option value="Electronics">Electronics</option>
+            <option value="Clothing">Clothing</option>
+            <option value="Books">Books</option>
+            <option value="Furniture">Furniture</option>
+            <option value="Tools">Tools</option>
+            <option value="Sports">Sports</option>
+            <option value="Games">Games</option>
+            <option value="Music">Music</option>
+            <option value="Antiques">Antiques</option>
+            <option value="Vehicles">Vehicles</option>
+            <option value="Real-estate">Real Estate</option>
+            <option value="Garden">Garden</option>
+            <option value="Computers">Computers</option>
+            <option value="Accessories">Accessories</option>
+          </select>
+        </div>
+
+
+        <div class="mb-2">
+          <label for="name" class="form-label small">Listing Name</label>
+          <input type="text" class="form-control form-control-sm" id="name" name="name" required
+            placeholder="Enter the name of your listing">
+        </div>
+
+        <div class="mb-2">
+          <label for="description" class="form-label small">Description</label>
+          <textarea class="form-control form-control-sm" id="description" name="description" rows="3" required
+            placeholder="Provide a brief description of your listing"></textarea>
+        </div>
+
+        <div class="mb-3">
+          <label for="price" class="form-label small">Price (€)</label>
+          <input type="number" class="form-control form-control-sm" id="price" name="price" step="0.01" min="0" required
+            placeholder="Enter the price in Euros">
+        </div>
+        <div class="d-grid">
+          <button type="submit" class="btn btn-sm btn-primary">Submit</button>
+        </div>
+
+
+        
+      </form>
 
 
 {% endblock %}
-

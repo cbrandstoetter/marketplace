@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block title %}MarketPlace{% endblock %}
+
+{% block content %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .category {
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            position: absolute;
+        }
+
+        .category-container {
+            position: relative;
+            width: 100%;
+            height: 50px;
+            /* Adjust height to match the category height */
+        }
+
+        .category.show {
+            opacity: 1;
+        }
+
+        #btn-action > a {
+            font-size:1.9rem;
+        }
+
+        #btn-action > a:hover {
+            background-color: #A7C6DA !important;
+            color: #FFF3B0 !important;
+        }
+    </style>
+</head>
+
+<!-- Fullscreen Layout -->
+
+<!-- Hero Section -->
+<h1 class="fw-bold">Buy & Sell Great Things with Ease!</h1>
+<p class="fs-5">Find the best deals on used & new products or list your own in minutes.</p>
+
+<!-- Categories Section -->
+<h5 class="fw-bold text-dark">Popular Categories</h5>
+<div class="d-flex justify-content-center flex-wrap mt-2 category-container">
+    <span class="badge bg-warning text-dark m-1 p-2 category">📱 Electronics</span>
+    <span class="badge bg-warning text-dark m-1 p-2 category">🛋 Furniture</span>
+    <span class="badge bg-warning text-dark m-1 p-2 category">👕 Clothing</span>
+    <span class="badge bg-warning text-dark m-1 p-2 category">🚗 Vehicles</span>
+    <span class="badge bg-warning text-dark m-1 p-2 category">🏡 Home & Garden</span>
+</div>
+
+<div class="mt-3" id="btn-action">
+    <a href="{{ url_for('post_listing') }}" class="btn btn-lg m-3" style="background-color: #8A6872; color: #A7C6DA">Start Selling
+        <img style="height: 20px;" src="{{ url_for('static', filename='icons8-money-48.png') }}">
+
+    </a>
+    <a href="{{ url_for('show_listings') }}" class="btn btn-lg m-3" style="background-color: #443850; color: #A7C6DA;">Browse Deals
+        <img style="height: 20px;" src="{{ url_for('static', filename='icons8-search-48.png') }}">
+    </a>
+</div>
+
+<script>
+    let currentIndex = 0;
+    const categories = document.querySelectorAll('.category');
+    const totalCategories = categories.length;
+
+    function showNextCategory() {
+        // Hide current category
+        categories[currentIndex].classList.remove('show');
+
+        // Update to next category
+        currentIndex = (currentIndex + 1) % totalCategories;
+
+        // Show the next category
+        categories[currentIndex].classList.add('show');
+    }
+
+    // Initial category visibility
+    categories[currentIndex].classList.add('show');
+
+    // Change category every 3 seconds (3000ms)
+    setInterval(showNextCategory, 1500);
+
+
+</script>
+
+<style>
+
+</style>
+
+{% endblock %}
