@@ -14,21 +14,26 @@ app = Flask(__name__)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
+limiter = Limiter(get_remote_address, default_limits=["100 per hour"])
+limiter.init_app(app)
+
 app.config['DEBUG'] = False
 app.config['WTF_CSRF_ENABLED'] = True
 app.config['UPLOAD_FOLDER'] = 'static'
 app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif'}
 app.config['SECRET_KEY'] = os.environ.get('FLASK_SECRET_KEY', 'default_secret_key')
 
-limiter = Limiter(
-    get_remote_address,
-    app=app,
-    default_limits=["100 per hour"],  # 🔒 Global limit
-)
 
 @app.route('/robots.txt')
 def robots():
     return send_from_directory(os.getcwd(), 'robots.txt')
+
+
+@app.route('/test')
+@limiter.limit("5 per minute")  # Additional limit for this route
+def test_route():
+    return jsonify(message="This route is rate-limited.")
+
 
 @app.errorhandler(429)
 def ratelimit_handler(e):
@@ -264,8 +269,8 @@ def demo():
     
 
 
-@limiter.limit("10 per minute")  # Custom route-level limit
 @app.route('/login', methods=['GET', 'POST'])
+@limiter.limit("5 per minute", error_message="Too many login attempts. Please try again later.")
 def login():
     if request.method == 'POST':
         username = request.form['username']
