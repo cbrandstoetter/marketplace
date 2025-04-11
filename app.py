@@ -2,8 +2,12 @@ import os
 import sqlite3
 from werkzeug.exceptions import abort
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask import Flask, render_template, request, flash, redirect, url_for, session, jsonify
+from flask import Flask, render_template, request, flash, redirect, url_for, session, jsonify, send_from_directory
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user, UserMixin
+
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
+
 
 # flask --app app run
 app = Flask(__name__)
@@ -16,10 +20,23 @@ app.config['UPLOAD_FOLDER'] = 'static'
 app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif'}
 app.config['SECRET_KEY'] = os.environ.get('FLASK_SECRET_KEY', 'default_secret_key')
 
+limiter = Limiter(
+    get_remote_address,
+    app=app,
+    default_limits=["100 per hour"],  # 🔒 Global limit
+)
+
+@app.route('/robots.txt')
+def robots():
+    return send_from_directory(os.getcwd(), 'robots.txt')
+
+@app.errorhandler(429)
+def ratelimit_handler(e):
+    return jsonify(error="Rate limit exceeded. Try again later."), 429
 
 # def getCategoryFromId(categoryId):
 #     categories = [
-#         "Toys",
+#         "Toys",e
 #         "Electronics",
 #         "Clothing",
 #         "Books",
@@ -247,7 +264,7 @@ def demo():
     
 
 
-
+@limiter.limit("10 per minute")  # Custom route-level limit
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
