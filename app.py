@@ -15,7 +15,6 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 
 limiter = Limiter(get_remote_address, app=app, default_limits=["100 per hour"])
-limiter.init_app(app)
 
 app.config['DEBUG'] = False
 app.config['WTF_CSRF_ENABLED'] = True
