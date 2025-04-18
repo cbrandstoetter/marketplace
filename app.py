@@ -519,3 +519,11 @@ def message_get(id):
             flash('database error')
     
     return render_template('messages-chat.html', messages=messages, user_with=user_with)
+
+
+@app.route("/api/listings", methods=["GET"])
+@limiter.limit("5 per minute", error_message="Too many login attempts. Please try again later.")
+def api_listings():
+    if request.headers.get("key") != "bd463c69-0c8b-4f06-8f31-4e5b6783ed23":
+        abort(401)
+    return jsonify(message="Hello from API")
