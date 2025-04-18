@@ -22,6 +22,7 @@ app.config['WTF_CSRF_ENABLED'] = True
 app.config['UPLOAD_FOLDER'] = 'static'
 app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif'}
 app.config['SECRET_KEY'] = os.environ.get('FLASK_SECRET_KEY', 'default_secret_key')
+API_KEY = os.environ.get('API_KEY', 'default_secret_key')
 
 
 @app.route('/robots.txt')
@@ -524,6 +525,6 @@ def message_get(id):
 @app.route("/api/listings", methods=["GET"])
 @limiter.limit("5 per minute", error_message="Too many login attempts. Please try again later.")
 def api_listings():
-    if request.headers.get("key") != "bd463c69-0c8b-4f06-8f31-4e5b6783ed23":
+    if request.headers.get("key") != API_KEY:
         abort(401)
     return jsonify(message="Hello from API")
